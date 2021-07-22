@@ -29,6 +29,17 @@ public class ScoreController : MonoBehaviour
         quitButton.onClick.AddListener(OnCloseButtonClick);
     }
 
+    void Update()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                OnCloseButtonClick();
+            }
+        }
+    }
+
     void OnCloseButtonClick()
     {
         SceneManager.LoadScene("HomeScene");
@@ -47,6 +58,7 @@ public class ScoreController : MonoBehaviour
         BoardController.GameEnded -= ShowGameResult;
         BoardController.TurnChanged -= ConfigureCurrentPlayerText;
     }
+
     private void ConfigureScore(int score, bool isPlayerTurn)
     {
         if (isPlayerTurn)
@@ -92,5 +104,4 @@ public class ScoreController : MonoBehaviour
             result.text = "DRAW !!";
         }
     }
-
 }

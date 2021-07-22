@@ -44,8 +44,10 @@ public class BoardController : MonoBehaviour
         columnCount = boardSizeData.columnValue;
         rowCount++;
         columnCount++;
+
         cam = Camera.main;
         SetCameraPos();
+
         dots = new Vector3[rowCount, columnCount];
         totalLineCount = (rowCount * (columnCount - 1)) + ((rowCount - 1) * columnCount);
         lines = new GameObject[totalLineCount];
@@ -54,7 +56,7 @@ public class BoardController : MonoBehaviour
         offset = dotGap / 10;
         aiController = GetComponent<AIController>();
         GenerateGrid();
-        StartCoroutine(WaitAndPrint());
+        StartCoroutine(WaitAndDraw());
     }
 
     void GenerateGrid()
@@ -121,7 +123,7 @@ public class BoardController : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitAndPrint()
+    private IEnumerator WaitAndDraw()
     {
         while (true)
         {
@@ -208,7 +210,6 @@ public class BoardController : MonoBehaviour
         ChangeTurn(line);
         aiController.CheckBoxFilled(isHorizontal, obj);
     }
-
 
     private void ChangeTurn(LineRenderer line)
     {

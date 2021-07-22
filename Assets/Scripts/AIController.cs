@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIController : MonoBehaviour
@@ -19,6 +17,9 @@ public class AIController : MonoBehaviour
         boardController = GetComponent<BoardController>();
     }
 
+    /*
+     * Store adjacent lines with the line drawn into two array each array for each side of the line drawn
+     */
     public void CheckBoxFilled(bool isHorizontal, GameObject obj)
     {
         GetComponent<BoxCollider2D>().enabled = false;

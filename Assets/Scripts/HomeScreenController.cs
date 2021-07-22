@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,10 +29,13 @@ public class HomeScreenController : MonoBehaviour
 
     private void OnStartButtonClick()
     {
-        int row = int.Parse(rowIF.text.ToString(), System.Globalization.NumberStyles.Integer);
-        int column = int.Parse(columnIF.text.ToString(), System.Globalization.NumberStyles.Integer);
-        boardSizeData.rowValue = row;
-        boardSizeData.columnValue = column;
+        if (!string.IsNullOrEmpty(rowIF.text.ToString()) && !string.IsNullOrEmpty(columnIF.text.ToString()))
+        {
+            int row = int.Parse(rowIF.text.ToString(), System.Globalization.NumberStyles.Integer);
+            int column = int.Parse(columnIF.text.ToString(), System.Globalization.NumberStyles.Integer);
+            boardSizeData.rowValue = row;
+            boardSizeData.columnValue = column; 
+        }
         SceneManager.LoadScene("GameScene");
     }
 
@@ -50,7 +50,7 @@ public class HomeScreenController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Application.Quit();
+                OnCloseButtonClick();
             }
         }
     }
