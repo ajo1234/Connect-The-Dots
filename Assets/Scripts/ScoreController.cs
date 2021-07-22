@@ -53,10 +53,14 @@ public class ScoreController : MonoBehaviour
         if (BoardController.isPlayerTurn)
         {
             turn.text = yourTurnText;
+            turn.color = Color.blue;
+            Debug.Log(turn.color);
+            Debug.Log(turn.faceColor);
         }
         else
         {
             turn.text = compTurnText;
+            turn.color = Color.green;
         }
     }
 

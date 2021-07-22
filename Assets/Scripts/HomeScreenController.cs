@@ -9,10 +9,10 @@ using UnityEngine.UI;
 public class HomeScreenController : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI row;
+    private TMP_InputField rowIF;
 
     [SerializeField]
-    private TextMeshProUGUI column;
+    private TMP_InputField columnIF;
 
     [SerializeField]
     private Button startButton;
@@ -24,10 +24,8 @@ public class HomeScreenController : MonoBehaviour
 
     private void OnButtonClick()
     {
-        //if (int.TryParse(row.text, out int result))
-        PlayerPrefs.SetInt("Row", Convert.ToInt32(row.text));
-        if (int.TryParse(column.text, out int result))
-            PlayerPrefs.SetInt("Column", result);
+        int num = int.Parse(rowIF.text.ToString(), System.Globalization.NumberStyles.Integer);
+        PlayerPrefs.SetInt("Row", num);
         SceneManager.LoadScene("GameScene");
     }
 }

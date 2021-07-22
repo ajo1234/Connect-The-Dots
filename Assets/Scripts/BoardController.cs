@@ -18,8 +18,8 @@ public class BoardController : MonoBehaviour
 
     private int dotGap = 10;
     private int offset;
-    private int rowCount = 2;
-    private int columnCount = 3;
+    private int rowCount = 7;
+    private int columnCount = 5;
 
     private bool isGameOver = false;
 
@@ -105,7 +105,7 @@ public class BoardController : MonoBehaviour
         }
         
         transform.GetComponent<BoxCollider2D>().offset = new Vector2(((float)rowCount * dotGap / 2 - 0.5f), ((float)columnCount * dotGap / 2 - 0.5f));
-        transform.GetComponent<BoxCollider2D>().size = new Vector2(rowCount * dotGap, columnCount * dotGap);
+        transform.GetComponent<BoxCollider2D>().size = new Vector2(rowCount * dotGap + (dotGap / 2), columnCount * dotGap + (dotGap / 2));
     }
 
     private void SetCameraPos()
@@ -127,7 +127,7 @@ public class BoardController : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(2f);
             
             if (!isPlayerTurn && totalCompletedLines != totalLineCount)
             {
@@ -145,6 +145,7 @@ public class BoardController : MonoBehaviour
 
     private void PlayerAction(Vector3 mousePos)
     {
+        bool isLineCheckComplete = false;
         for (int i = 0; i < rowCount; i++)
         {
             for (int j = 0; j < columnCount; j++)
@@ -162,6 +163,7 @@ public class BoardController : MonoBehaviour
                                 isPlayerTurn = !isPlayerTurn;
                                 TurnChanged();
                             }
+                            isLineCheckComplete = true;
                             break;
                         }
                     }
@@ -179,10 +181,19 @@ public class BoardController : MonoBehaviour
                                 isPlayerTurn = !isPlayerTurn;
                                 TurnChanged();
                             }
+                            isLineCheckComplete = true;
                             break;
                         }
                     }
                 }
+                if (isLineCheckComplete)
+                { 
+                    break;
+                }
+            }
+            if (isLineCheckComplete)
+            {
+                break;
             }
         }
     }
