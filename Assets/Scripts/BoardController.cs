@@ -16,24 +16,38 @@ public class BoardController : MonoBehaviour
 
     private Camera cam;
 
-    private int rowCount = 7;
-    private int columnCount = 7;
     private int dotGap = 10;
     private int offset;
+    private int rowCount = 2;
+    private int columnCount = 3;
 
     private bool isGameOver = false;
 
     private Vector3[,] dots;
 
     public int totalLineCount = 0;
-    public bool isPlayerTurn = true;
+    private int totalCompletedLines = 0;
     public GameObject[] lines;
 
+    public delegate void GameEvent();
+    public static event GameEvent GameEnded;
+    public static event GameEvent TurnChanged;
+
+    public static bool isPlayerTurn = true;
 
     private void Start()
     {
+        //if (PlayerPrefs.HasKey("Row")){
+        //    rowCount = PlayerPrefs.GetInt("Row");
+        //}
+        //if (PlayerPrefs.HasKey("Column"))
+        //{
+        //    columnCount = PlayerPrefs.GetInt("Column");
+        //}
+        rowCount++;
+        columnCount++;
         cam = Camera.main;
-        cam.orthographicSize = dotGap * columnCount; 
+        SetCameraPos();
         dots = new Vector3[rowCount, columnCount];
         totalLineCount = (rowCount * (columnCount - 1)) + ((rowCount - 1) * columnCount);
         lines = new GameObject[totalLineCount];
@@ -74,7 +88,7 @@ public class BoardController : MonoBehaviour
                     lineIndex++;
                 }
             }
-            for (int index = 0; (index < rowCount && lineIndex < totalLineCount); index++)
+            for (int index = 0; (index < columnCount && lineIndex < totalLineCount); index++)
             {
                 lines[lineIndex] = Instantiate(line);
                 lines[lineIndex].transform.parent = transform;
@@ -89,14 +103,20 @@ public class BoardController : MonoBehaviour
                 lineIndex++;
             }
         }
-        cam.transform.position = new Vector3(((float)rowCount * dotGap / 2 - 5), ((float)columnCount * dotGap / 2), -10);
+        
         transform.GetComponent<BoxCollider2D>().offset = new Vector2(((float)rowCount * dotGap / 2 - 0.5f), ((float)columnCount * dotGap / 2 - 0.5f));
         transform.GetComponent<BoxCollider2D>().size = new Vector2(rowCount * dotGap, columnCount * dotGap);
     }
 
+    private void SetCameraPos()
+    {
+        cam.transform.position = new Vector3(((float)columnCount * dotGap / 2 - 5), ((float)rowCount * dotGap / 2), -10);
+        cam.orthographicSize = (rowCount > columnCount) ? dotGap * rowCount : dotGap * columnCount;
+    }
+
     private void OnMouseDown()
     {
-        if (isPlayerTurn)
+        if (isPlayerTurn && totalCompletedLines != totalLineCount)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             PlayerAction(mousePos);
@@ -108,10 +128,17 @@ public class BoardController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1.0f);
-            if (!isPlayerTurn)
+            
+            if (!isPlayerTurn && totalCompletedLines != totalLineCount)
             {
                 GameObject obj = aiController.FindBestCell();
                 PlayerAction(obj.transform.position);
+            }
+            else if (totalCompletedLines == totalLineCount)
+            {
+                GameEnded();
+                gameObject.SetActive(false);
+                break;
             }
         }
     }
@@ -130,8 +157,11 @@ public class BoardController : MonoBehaviour
                         if (go.name == "Line H " + j + " " + i && !go.GetComponent<Line>().isLineDrawn)
                         {
                             DrawLine(go, i, j, true);
-                            aiController.CheckCompleteCellExists();
-                            isPlayerTurn = !isPlayerTurn;
+                            if (!aiController.CheckCompleteCellExists())
+                            {
+                                isPlayerTurn = !isPlayerTurn;
+                                TurnChanged();
+                            }
                             break;
                         }
                     }
@@ -144,8 +174,11 @@ public class BoardController : MonoBehaviour
                         if (go.name == "Line V " + i + " " + j && !go.GetComponent<Line>().isLineDrawn)
                         {
                             DrawLine(go, i, j, false);
-                            aiController.CheckCompleteCellExists();
-                            isPlayerTurn = !isPlayerTurn;
+                            if (!aiController.CheckCompleteCellExists())
+                            {
+                                isPlayerTurn = !isPlayerTurn;
+                                TurnChanged();
+                            }
                             break;
                         }
                     }
@@ -162,6 +195,7 @@ public class BoardController : MonoBehaviour
             line.SetPosition(1, dots[i, j + 1]);
         else
             line.SetPosition(1, dots[i + 1, j]);
+        totalCompletedLines++; 
         ChangeTurn(line);
         aiController.CheckBoxFilled(isHorizontal, obj);
     }

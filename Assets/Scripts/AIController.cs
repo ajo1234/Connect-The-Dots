@@ -6,7 +6,7 @@ public class AIController : MonoBehaviour
 {
     BoardController boardController;
     public delegate void ScoreHandler(int score, bool isPlayer);
-    public static event ScoreHandler score;
+    public static event ScoreHandler Score;
     System.Random random = new System.Random();
 
     int emptyLineCount = 0;
@@ -189,7 +189,7 @@ public class AIController : MonoBehaviour
         GetComponent<BoxCollider2D>().enabled = true;
     }
 
-    public void CheckCompleteCellExists()
+    public bool CheckCompleteCellExists()
     {
         int scoredValue = 0;
         emptyLineCount = 0;
@@ -251,7 +251,12 @@ public class AIController : MonoBehaviour
 
         if (scoredValue > 0)
         {
-            score(scoredValue, boardController.isPlayerTurn); 
+            Score(scoredValue, BoardController.isPlayerTurn);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
