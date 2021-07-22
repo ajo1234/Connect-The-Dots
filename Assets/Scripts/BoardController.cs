@@ -18,8 +18,8 @@ public class BoardController : MonoBehaviour
 
     private int dotGap = 10;
     private int offset;
-    private int rowCount = 7;
-    private int columnCount = 5;
+    private int rowCount = 3;
+    private int columnCount = 3;
 
     private bool isGameOver = false;
 
@@ -33,17 +33,15 @@ public class BoardController : MonoBehaviour
     public static event GameEvent GameEnded;
     public static event GameEvent TurnChanged;
 
+    private BoardSizeData boardSizeData;
+
     public static bool isPlayerTurn = true;
 
     private void Start()
     {
-        //if (PlayerPrefs.HasKey("Row")){
-        //    rowCount = PlayerPrefs.GetInt("Row");
-        //}
-        //if (PlayerPrefs.HasKey("Column"))
-        //{
-        //    columnCount = PlayerPrefs.GetInt("Column");
-        //}
+        boardSizeData = GameObject.FindGameObjectWithTag("Player").GetComponent<BoardSizeData>();
+        rowCount = boardSizeData.rowValue;
+        columnCount = boardSizeData.columnValue;
         rowCount++;
         columnCount++;
         cam = Camera.main;

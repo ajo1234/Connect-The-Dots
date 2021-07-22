@@ -17,15 +17,20 @@ public class HomeScreenController : MonoBehaviour
     [SerializeField]
     private Button startButton;
 
+    private BoardSizeData boardSizeData;
+
     private void Start()
     {
+        boardSizeData = GameObject.FindGameObjectWithTag("Player").GetComponent<BoardSizeData>();
         startButton.onClick.AddListener(OnButtonClick);
     }
 
     private void OnButtonClick()
     {
-        int num = int.Parse(rowIF.text.ToString(), System.Globalization.NumberStyles.Integer);
-        PlayerPrefs.SetInt("Row", num);
+        int row = int.Parse(rowIF.text.ToString(), System.Globalization.NumberStyles.Integer);
+        int column = int.Parse(columnIF.text.ToString(), System.Globalization.NumberStyles.Integer);
+        boardSizeData.rowValue = row;
+        boardSizeData.columnValue = column;
         SceneManager.LoadScene("GameScene");
     }
 }

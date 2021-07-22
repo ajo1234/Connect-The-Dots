@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class ScoreController : MonoBehaviour
     private TextMeshProUGUI result;
     [SerializeField]
     private TextMeshProUGUI turn;
+    [SerializeField]
+    private Button quitButton;
 
     int plyScore = 0;
     int compScore = 0;
@@ -20,7 +24,16 @@ public class ScoreController : MonoBehaviour
     string yourTurnText = "YOUR TURN";
     string compTurnText = "COMPUTER TURN";
 
-    
+    private void Start()
+    {
+        quitButton.onClick.AddListener(OnCloseButtonClick);
+    }
+
+    void OnCloseButtonClick()
+    {
+        SceneManager.LoadScene("HomeScene");
+    }
+
     private void OnEnable()
     {
         AIController.Score += ConfigureScore;
@@ -54,8 +67,6 @@ public class ScoreController : MonoBehaviour
         {
             turn.text = yourTurnText;
             turn.color = Color.blue;
-            Debug.Log(turn.color);
-            Debug.Log(turn.faceColor);
         }
         else
         {
