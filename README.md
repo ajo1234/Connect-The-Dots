@@ -1,8 +1,7 @@
 # Connect-The-Dots
 A dot connect game in Unity 3D
 
-<img src="https://user-images.githubusercontent.com/42331751/128630845-cfe303a9-9fb7-4926-852d-5029671476f1.jpeg" width="100">
-<img src="https://user-images.githubusercontent.com/42331751/128630841-35fc8d94-e17e-493f-8462-8a4fab59ba7a.jpeg" width="100">
+<img src="https://user-images.githubusercontent.com/42331751/128630845-cfe303a9-9fb7-4926-852d-5029671476f1.jpeg" width="100"> <img src="https://user-images.githubusercontent.com/42331751/128630841-35fc8d94-e17e-493f-8462-8a4fab59ba7a.jpeg" width="100">
 <img src="https://user-images.githubusercontent.com/42331751/128630860-cc473f8e-b6cd-4cd9-9f8f-6ddbd5922ab0.jpeg" width="100">
 <img src="https://user-images.githubusercontent.com/42331751/128630858-4b7af72f-a7fb-402f-a607-2ca4905fc859.jpeg" width="100">
 <img src="https://user-images.githubusercontent.com/42331751/128630856-d33cce61-73dc-4a95-be65-cb62abce0dff.jpeg" width="100">
